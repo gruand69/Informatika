@@ -5,6 +5,8 @@
 #pragma once
 #include "CArtist.h"
 
+#define ID_TIMERA 40
+
 
 // Диалоговое окно CInformatikaDlg
 class CInformatikaDlg : public CDialogEx
@@ -60,7 +62,7 @@ public:
 	double m_D;
 	double m_E;
 	double m_Acc;
-	int m_Digits;
+	int m_NumDigits;
 protected:
 	CTrans m_Trans;
 	std::vector<CPoint> m_vecPt;
@@ -75,4 +77,5 @@ public:
 	afx_msg void On32771();
 	afx_msg void On32772();
 	afx_msg void On32773();
+	afx_msg void OnBnClickedOk();
 };

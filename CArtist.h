@@ -23,28 +23,28 @@ class CArtist :
         CDC* m_MemDc = nullptr; // ”казатель на контекст устройства пам€ти
         CBitmap* m_BitMap = nullptr; // ”казатель на растровое изображение
         int m_NumDigits; // „исло знаков после зап€той
+    public:
+        void SetParams(Parameters* params);
+        void SetBkColor(COLORREF col) { m_bkCol = col; }
+        void SetAxisColor(COLORREF col) { m_AxisColor = col; }
+        void SetSinColor(COLORREF col) { m_SinColor = col; }
+        void SetLinearColor(COLORREF col) { m_LinearColor = col; }
+        void SetIdataPtr(Idata* pData) { m_Idata = pData; }
+        void SetCalculation(CCalculation* calc, Parameters* params, CTrans* trans);
+        DECLARE_MESSAGE_MAP()
+        afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+        //void SetPrecision(int precision) { m_NumDigits = precision; }
+        void SetRedraw() { bRedraw = true; }
+        int GetPrecision () const { return m_NumDigits; }
+    private:
+        CCalculation* m_Calculation;
+        CTrans* m_Trans;
+        Parameters* m_params;
 
-public:
-    void SetParams(Parameters* params);
-    void SetBkColor(COLORREF col) { m_bkCol = col; }
-    void SetAxisColor(COLORREF col) { m_AxisColor = col; }
-    void SetSinColor(COLORREF col) { m_SinColor = col; }
-    void SetLinearColor(COLORREF col) { m_LinearColor = col; }
-    void SetIdataPtr(Idata* pData) { m_Idata = pData; }
-    void SetCalculation(CCalculation* calc, Parameters* params, CTrans* trans);
-    DECLARE_MESSAGE_MAP()
-    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-    void SetPrecision(int precision) { m_NumDigits = precision; }
-    void SetRedraw() { bRedraw = true; }
-    int GetPrecision () const { return m_NumDigits; }
-private:
-    CCalculation* m_Calculation;
-    CTrans* m_Trans;
-    Parameters* m_params;
-
-public:
-    afx_msg void OnPaint();
-    afx_msg void OnSize(UINT nType, int cx, int cy);
-    void SetRedrawFlag(bool flag);
+    public:
+        afx_msg void OnPaint();
+        afx_msg void OnSize(UINT nType, int cx, int cy);
+        void SetRedrawFlag(bool flag);
+        void SetPrecision(int precision);
 };
 

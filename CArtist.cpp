@@ -144,8 +144,8 @@ void CArtist::OnPaint()
 		int xOrigin = rc.CenterPoint().x;
 		int yOrigin = rc.CenterPoint().y;
 
-		//double maxMathX = (rc.right - xOrigin - BORDER_W) / m_Trans->m_ScaleX;
-		//double minMathX = (rc.left + BORDER_W - xOrigin ) / m_Trans->m_ScaleX;
+		double maxMathX = (rc.right - xOrigin - BORDER_W) / m_Trans->m_ScaleX;
+		double minMathX = (rc.left + BORDER_W - xOrigin ) / m_Trans->m_ScaleX;
 		double xStep = 0.5;
 	}
 	dc.BitBlt(0, 0, rc.Width(), rc.Height(), &memDc, 0, 0, SRCCOPY);
@@ -162,4 +162,9 @@ void CArtist::OnSize(UINT nType, int cx, int cy)
 void CArtist::SetRedrawFlag(bool flag)
 {
 	bRedraw = flag;
+}
+
+void CArtist::SetPrecision(int precision)
+{
+	m_NumDigits = precision;
 }
