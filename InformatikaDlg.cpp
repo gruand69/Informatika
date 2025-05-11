@@ -409,7 +409,15 @@ bool CInformatikaDlg::Calc()
 
 void CInformatikaDlg::OnSize(UINT nType, int cx, int cy)
 {
-	__super::OnSize(nType, cx, cy);
+	CDialogEx::OnSize(nType, cx, cy);
+	if (bCreated)
+	{
+		CRect rc;
+		m_artist.GetClientRect(&rc);
+		m_Trans.SetTransParam(rc.Width(), rc.Height());
+		Calc();
+	}
+	//__super::OnSize(nType, cx, cy);
 
 }
 
