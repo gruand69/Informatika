@@ -87,6 +87,7 @@ void CArtist::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		AfxMessageBox(_T("¬ выбранной области корней не найдено."));
 	}
+	//AfxMessageBox(_T("¬ выбранной области корней не найдено."));
 	CStatic::OnLButtonDown(nFlags, point);
 }
 
@@ -147,7 +148,111 @@ void CArtist::OnPaint()
 		double maxMathX = (rc.right - xOrigin - BORDER_W) / m_Trans->m_ScaleX;
 		double minMathX = (rc.left + BORDER_W - xOrigin ) / m_Trans->m_ScaleX;
 		double xStep = 0.5;
+
+		for (double mathVal = xStep; mathVal <= maxMathX; mathVal += xStep)
+		{
+			int xPos = xOrigin + static_cast<int>(round(mathVal * m_Trans->m_ScaleX));
+
+			memDc.MoveTo(xPos, yOrigin - 5);
+			memDc.LineTo(xPos, yOrigin + 5);
+
+			CString label;
+			label.Format(_T("%.1f"), mathVal);
+			memDc.TextOut(xPos - 10, yOrigin + 8, label);
+		}
+
+
+		for (double mathVal = -xStep; mathVal >= minMathX; mathVal -= xStep)
+		{
+			int xPos = xOrigin + static_cast<int>(round(mathVal * m_Trans->m_ScaleX));
+
+			memDc.MoveTo(xPos, yOrigin - 5);
+			memDc.LineTo(xPos, yOrigin + 5);
+
+			CString label;
+			label.Format(_T("%.1f"), mathVal);
+			memDc.TextOut(xPos - 10, yOrigin + 8, label);
+		}
+
+		double maxMathY = (yOrigin -rc.top - BORDER_W) / m_Trans->m_ScaleY;
+		double minMathY = -(rc.bottom - yOrigin - BORDER_W ) / m_Trans->m_ScaleY;
+		double yStep = 0.5;
+
+
+		for (double mathVal = yStep; mathVal <= maxMathY; mathVal += yStep)
+		{
+			int yPos = yOrigin - static_cast<int>(round(mathVal * m_Trans->m_ScaleY));
+
+			memDc.MoveTo(xOrigin - 5, yPos);
+			memDc.LineTo(xOrigin + 5, yPos);
+
+			CString label;
+			label.Format(_T("%.1f"), mathVal);
+			memDc.TextOut(xOrigin - 40, yPos - 5, label);
+		}
+		for (double mathVal = -yStep; mathVal >= minMathY; mathVal -= yStep)
+		{
+			int yPos = yOrigin - static_cast<int>(round(mathVal * m_Trans->m_ScaleY));
+
+			memDc.MoveTo(xOrigin - 5, yPos);
+			memDc.LineTo(xOrigin + 5, yPos);
+
+			CString label;
+			label.Format(_T("%.1f"), mathVal);
+			memDc.TextOut(xOrigin - 40, yPos - 5, label);
+		}
+
+		memDc.SelectObject(pOldPenTick);
+		memDc.SetTextColor(oldTextColor);
+		memDc.SelectObject(pOldFont);
 	}
+
+	if (m_Idata)
+	{
+		{
+			CPen penSin;
+			penSin.CreatePen(PS_SOLID, 3, m_SinColor);
+			CPen* pOldPen = memDc.SelectObject(&penSin);
+			std::vector<CPoint> sinPoints;
+			size_t sz = m_Idata->IGetSinPoints(sinPoints);
+			if (sz > 0)
+			{
+				memDc.MoveTo(sinPoints[0]);
+				for (auto pt : sinPoints)
+					memDc.LineTo(pt);
+			}
+			memDc.SelectObject(pOldPen);
+		}
+		{
+			CPen penLinear;
+			penLinear.CreatePen(PS_SOLID, 3, m_LinearColor);
+			CPen* pOldPen = memDc.SelectObject(&penLinear);
+			std::vector<CPoint> linearPoints;
+			size_t ln = m_Idata->IGetLinearPoints(linearPoints);
+			if (ln > 0)
+			{
+				memDc.MoveTo(linearPoints[0]);
+				for (auto pt : linearPoints)
+					memDc.LineTo(pt);
+			}
+			memDc.SelectObject(pOldPen);
+		}
+	}
+
+	{
+		CPen penFrame;
+		penFrame.CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+		CPen* pOldPen = memDc.SelectObject(&penFrame);
+
+		HBRUSH hOldBrush = (HBRUSH)memDc.SelectStockObject(NULL_BRUSH);
+		CRect rcBorder = rc;
+		rcBorder.DeflateRect(1, 1);
+		memDc.RoundRect(&rcBorder, CPoint(20, 20));
+
+		memDc.SelectObject(hOldBrush);
+		memDc.SelectObject(pOldPen);
+	}
+
 	dc.BitBlt(0, 0, rc.Width(), rc.Height(), &memDc, 0, 0, SRCCOPY);
 
 	memDc.SelectObject(pOldBmp);

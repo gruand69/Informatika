@@ -386,7 +386,7 @@ bool CInformatikaDlg::Calc()
 	sinParams.b = m_B;
 	sinParams.c = m_C;
 	sinParams.d = 0.0;
-	sinParams.e = m_E;
+	sinParams.e = 0.0;
 
 	Parameters linearParams;
 	linearParams.a = 0.0;

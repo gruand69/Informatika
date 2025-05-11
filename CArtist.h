@@ -10,6 +10,7 @@
 class CArtist :
     public CStatic
 {
+    //DECLARE_DYNAMIC(CArtist)
     public:
         CArtist();
        virtual ~CArtist();
